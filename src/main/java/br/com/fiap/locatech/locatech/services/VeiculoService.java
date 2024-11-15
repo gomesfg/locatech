@@ -27,7 +27,10 @@ public class VeiculoService {
 
     public void saveVeiculo(Veiculo veiculo){
         var save = this.veiculoRepository.save(veiculo);
-        Assert.state(save == 1, message: "Erro ao salvar veículo " + veiculo.getModelo());
+        //if (save == null || save.getId() == null) {
+        if (save == null) {
+            throw new IllegalStateException("Erro ao salvar veículo " + veiculo.getModelo());
+        }
     }
 
     public void updateVeiculo(Veiculo veiculo, Long id){

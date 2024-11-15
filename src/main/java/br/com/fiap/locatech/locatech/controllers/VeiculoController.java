@@ -4,6 +4,7 @@ import br.com.fiap.locatech.locatech.entities.Veiculo;
 import br.com.fiap.locatech.locatech.services.VeiculoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,4 +45,34 @@ public class VeiculoController {
         return ResponseEntity.ok(veiculo);
     }
 
+    @PostMapping
+    public ResponseEntity<Void> saveVeiculo(
+            @RequestBody Veiculo veiculo
+    ) {
+       logger.info("POST -> /veiculos");
+       this.veiculoService.saveVeiculo(veiculo);
+        var status = HttpStatus.CREATED;
+        return ResponseEntity.status(status.value()).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateVeiculo(
+            @PathVariable("id") Long id,
+            @RequestBody Veiculo veiculo
+    ) {
+        logger.info("PUT -> /veiculos/" + id);
+        this.veiculoService.updateVeiculo(veiculo, id);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status.value()).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVeiculo(
+            @PathVariable("id") Long id
+    ){
+        logger.info("DELETE -> /veiculos/" + id);
+        this.veiculoService.delete(id);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status.value()).build();
+    }
 }
