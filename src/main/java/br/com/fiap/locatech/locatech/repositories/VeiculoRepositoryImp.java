@@ -38,7 +38,7 @@ public class VeiculoRepositoryImp implements VeiculoRepository {
     @Override
     public Integer save(Veiculo veiculo) {
         return this.jdbcClient
-                .sql("INSERT INTO veiculos (marca, modelo, placa, ano, cor, valor_diaria) VALUES (:marca, :modelo, :placa, :ano, :cor, :valor_diaria")
+                .sql("INSERT INTO veiculos (marca, modelo, placa, ano, cor, valor_diaria) VALUES (:marca, :modelo, :placa, :ano, :cor, :valor_diaria)")
                 .param("marca", veiculo.getMarca())
                 .param("modelo", veiculo.getModelo())
                 .param("placa", veiculo.getPlaca())
