@@ -2,9 +2,7 @@ package br.com.fiap.locatech.locatech.controllers;
 
 import br.com.fiap.locatech.locatech.dtos.AluguelRequestDTO;
 import br.com.fiap.locatech.locatech.entities.Aluguel;
-import br.com.fiap.locatech.locatech.entities.Pessoa;
 import br.com.fiap.locatech.locatech.services.AluguelService;
-import br.com.fiap.locatech.locatech.services.PessoaService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/alugueis")
-public class AluguelController {
-    private static final Logger logger = LoggerFactory.getLogger(AluguelController.class);
+@RequestMapping("/v2/alugueis")
+public class AluguelControllerV2 {
+    private static final Logger logger = LoggerFactory.getLogger(AluguelControllerV2.class);
 
     private final AluguelService aluguelService;
 
-    public AluguelController(AluguelService aluguelService){
+    public AluguelControllerV2(AluguelService aluguelService){
         this.aluguelService = aluguelService;
     }
 
@@ -48,7 +46,17 @@ public class AluguelController {
         return ResponseEntity.ok(aluguel);
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/vnd.locatech.v1+json")
+    public ResponseEntity<Void> saveAluguelV1(
+            @Valid @RequestBody AluguelRequestDTO aluguel
+    ) {
+        logger.info("POST -> /alugueis");
+        this.aluguelService.saveAluguel(aluguel);
+        var status = HttpStatus.CREATED;
+        return ResponseEntity.status(status.value()).build();
+    }
+
+    @PostMapping(produces = "application/vnd.locatech.v2+json")
     public ResponseEntity<Void> saveAluguel(
             @Valid @RequestBody AluguelRequestDTO aluguel
     ) {
